@@ -63,7 +63,6 @@ def _add_participants() -> List:
     Console.log(message='Adding participants...')
     participants_confirmed = False
     while not participants_confirmed:
-        Console.log(message='Add participants:')
         participants = []
         participant = _add_participant()
         participants.append(participant)
