@@ -14,11 +14,10 @@ person_1 = Participant(name='milad', items=[item_1, item_2])
 
 tab_0 = Tab(
     name='biroon',
-    date=datetime.today(),
     # shared_items=[item_3, item_4],
     shared_items=[],
     participants=[person_0, person_1])
-# participants=[])
+    # participants=[])
 
 pprint(tab_0.manifest, sort_dicts=False)
 # print('--------------------')

@@ -1,6 +1,7 @@
 from dataclasses import dataclass
 from datetime import datetime
 from typing import List
+import uuid
 
 
 @dataclass
@@ -15,8 +16,8 @@ class Item:
     @property
     def manifest(self) -> dict:
         return {
-            'Item name': self.name,
-            'Item price': self.price,
+            'item_name': self.name,
+            'item_price': self.price,
         }
 
 
@@ -35,21 +36,21 @@ class Participant:
     @property
     def manifest(self) -> dict:
         return {
-            'Participant name': self.name,
-            'Participant items': [item.manifest for item in self.items],
+            'participant_name': self.name,
+            'participant_items': [item.manifest for item in self.items],
         }
 
 
 @dataclass
 class Tab:
     name: str
-    date: datetime
     shared_items: List[Item]
     participants: List[Participant]
 
     def __post_init__(self) -> None:
+        self.ID = str(uuid.uuid1())
         self.name = self.name.capitalize()
-        self.date = self.date.strftime("%d/%m/%Y")
+        self.date = datetime.today().strftime("%d/%m/%Y")
 
     def participant_share(self, name: str) -> float:
         participant = [
@@ -96,38 +97,41 @@ class Tab:
     def manifest(self) -> dict:
         if not self.shared_items:
             return {
-                'Tab name': self.name,
-                'Tab date': self.date,
-                'Tab total': self.total,
-                'Tab number of participants': self.number_of_participants,
-                'Tab participants':
+                'tab_ID': self.ID,
+                'tab_name': self.name,
+                'tab_date': self.date,
+                'tab_total': self.total,
+                'tab_number_of_participants': self.number_of_participants,
+                'tab_participants':
                 [participant.manifest for participant in self.participants],
-                'Tab participants share': self.all_participants_share,
+                'tab_participants_share': self.all_participants_share,
             }
 
         elif not self.participants:
             return {
-                'Tab name': self.name,
-                'Tab date': self.date,
-                'Tab total': self.total,
-                'Tab shared items':
+                'tab_ID': self.ID,
+                'tab_name': self.name,
+                'tab_date': self.date,
+                'tab_total': self.total,
+                'tab_shared_items':
                 [item.manifest for item in self.shared_items],
-                'Tab number of shared participants':
+                'tab_number_of_shared_participants':
                 self.number_of_shared_participants,
-                'Tab equal share': self.equal_share,
+                'tab_equal_share': self.equal_share,
             }
 
         else:
             return {
-                'Tab name': self.name,
-                'Tab date': self.date,
-                'Tab total': self.total,
-                'Tab shared items':
+                'tab_ID': self.ID,
+                'tab_name': self.name,
+                'tab_date': self.date,
+                'tab_total': self.total,
+                'tab_shared_items':
                 [item.manifest for item in self.shared_items],
-                'Tab shared items total': self.shared_items_total,
-                'Tab equal share': self.equal_share,
-                'Tab number of participants': self.number_of_participants,
-                'Tab participants':
+                'tab_shared_items_total': self.shared_items_total,
+                'tab_equal_share': self.equal_share,
+                'tab_number_of_participants': self.number_of_participants,
+                'tab_participants':
                 [participant.manifest for participant in self.participants],
-                'Tab participants share': self.all_participants_share,
+                'tab_participants_share': self.all_participants_share,
             }
