@@ -4,6 +4,7 @@ from console.messages import Messages
 
 
 class Console:
+    red = typer.colors.RED
     white = typer.colors.WHITE
     green = typer.colors.GREEN
     magenta = typer.colors.MAGENTA
@@ -20,14 +21,18 @@ class Console:
                            nl=False)
 
     @classmethod
-    def log(cls, message: str) -> None:
-        cls.Info()
-        typer.secho(message, fg=cls.white, bold=True)
+    def Error(cls) -> None:
+        typer.secho('Error:\t'.rstrip('\n'), fg=cls.red, bold=True, nl=False)
 
     @classmethod
-    def confirmation(cls) -> None:
-        confirm = typer.confirm(Messages.Confirm)
-        return confirm
+    def log(cls, message: str) -> None:
+        cls.Info()
+        typer.secho(message, fg=cls.white, bold=False)
+
+    @classmethod
+    def error(cls, message: str) -> None:
+        cls.Error()
+        typer.secho(message, fg=cls.white, bold=False)
 
     @classmethod
     def start_message(cls) -> None:
@@ -35,6 +40,9 @@ class Console:
         typer.secho(Messages.Start, fg=cls.magenta, bold=True)
 
     @classmethod
-    def exit_message(cls) -> None:
-        cls._Info()
-        typer.secho(Messages.Exit, fg=cls.magenta, bold=True)
+    def exit_message(cls, reason: str, nl: bool) -> None:
+        if nl:
+            cls._Info()
+        else:
+            cls.Info()
+        typer.secho(f'{reason} {Messages.Exit}', fg=cls.magenta, bold=True)

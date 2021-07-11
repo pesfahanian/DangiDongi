@@ -7,6 +7,8 @@ from console import Console
 
 from schema import Item, Participant, Tab
 
+from utils import error_exit_application
+
 
 def _new_tab() -> None:
     tab_confirmed = False
@@ -36,9 +38,14 @@ def _new_tab() -> None:
               shared_items=shared_items,
               participants=participants)
 
-    pprint(tab)
-    print(tab.all_participants_share)
-    print(tab.total)
+    # pprint(tab)
+    # print(tab.all_participants_share)
+    # print(tab.total)
+
+    if not shared_items and not participants:
+        Console.error(
+            message='Both `shared items` and `participants` cannot be empty.')
+        error_exit_application()
 
 
 def _add_shared_items() -> List:

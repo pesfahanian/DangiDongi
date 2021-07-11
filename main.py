@@ -7,7 +7,7 @@ from console import Console
 
 from schema import Item
 
-from utils import exit_application
+from utils import catch_exit_application
 
 app = typer.Typer()
 
@@ -28,7 +28,7 @@ def query_tab():
 
 
 if __name__ == '__main__':
-    signal(SIGINT, exit_application)
+    signal(SIGINT, catch_exit_application)
     Console.start_message()
     while True:
         app()
