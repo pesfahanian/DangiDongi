@@ -1,3 +1,4 @@
+from pprint import pprint
 from datetime import datetime
 
 from schema import Item, Participant, Tab
@@ -9,14 +10,20 @@ item_3 = Item(name='doogh', price=10)
 item_4 = Item(name='piaz', price=5)
 
 person_0 = Participant(name='parsa', items=[item_0])
-person_1 = Participant(name='milad', items=[item_2])
+person_1 = Participant(name='milad', items=[item_1, item_2])
 
-tab_0 = Tab(name='biroon',
-            date=datetime.today(),
-            shared_items=[item_3, item_4],
-            participants=[])
-            # participants=[person_0, person_1])
+tab_0 = Tab(
+    name='biroon',
+    date=datetime.today(),
+    # shared_items=[item_3, item_4],
+    shared_items=[],
+    participants=[person_0, person_1])
+# participants=[])
 
-print(tab_0.date)
-print(tab_0.all_participants_share)
-print(tab_0.total)
+pprint(tab_0.manifest, sort_dicts=False)
+# print('--------------------')
+# print(tab_0.date)
+# print('--------------------')
+# print(tab_0.all_participants_share)
+# print('--------------------')
+# print(tab_0.total)

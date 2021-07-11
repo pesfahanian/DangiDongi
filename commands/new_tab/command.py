@@ -20,14 +20,12 @@ def _new_tab() -> None:
         add_shared_items = typer.confirm('Add shared items?')
         if add_shared_items:
             shared_items = _add_shared_items()
-            print(shared_items)
         else:
             shared_items = []
 
         add_participants = typer.confirm('Add participants?')
         if add_participants:
             participants = _add_participants()
-            print(participants)
         else:
             participants = []
 
@@ -38,14 +36,17 @@ def _new_tab() -> None:
               shared_items=shared_items,
               participants=participants)
 
-    # pprint(tab)
-    # print(tab.all_participants_share)
-    # print(tab.total)
-
     if not shared_items and not participants:
         Console.error(
             message='Both `shared items` and `participants` cannot be empty.')
         error_exit_application()
+
+    if not participants:
+        count = _ask_number_of_shared_participants()
+        tab.set_number_of_shared_participants(count=int(count))
+        Console.log(message='Tab updated.')
+
+    _print_tab_manifest(tab_manifest=tab.manifest)
 
 
 def _add_shared_items() -> List:
@@ -120,3 +121,22 @@ def _add_item() -> Item:
         item_confirmed = typer.confirm('Confirm item?')
     Console.log(message='item added!')
     return Item(name=item_name, price=float(item_price))
+
+
+def _ask_number_of_shared_participants() -> int:
+    count_confirmed = False
+    while not count_confirmed:
+        Console.log(message='Add number of participants in shared items:')
+        count = typer.prompt('Participants count',
+                             confirmation_prompt=False,
+                             hide_input=False)
+        count_confirmed = typer.confirm('Confirm the count?')
+    Console.log(message='item added!')
+    return count
+
+
+def _print_tab_manifest(tab_manifest: dict) -> None:
+    Console.log(message='Displaying tab manifest:')
+    print('-----------------------------------------------------------------')
+    pprint(tab_manifest, sort_dicts=False)
+    print('-----------------------------------------------------------------')

@@ -12,6 +12,13 @@ class Item:
         self.name = self.name.capitalize()
         self.price = float(round(self.price, 3))
 
+    @property
+    def manifest(self) -> dict:
+        return {
+            'Item name': self.name,
+            'Item price': self.price,
+        }
+
 
 @dataclass
 class Participant:
@@ -24,6 +31,13 @@ class Participant:
     @property
     def total(self) -> float:
         return sum([item.price for item in self.items])
+
+    @property
+    def manifest(self) -> dict:
+        return {
+            'Participant name': self.name,
+            'Participant items': [item.manifest for item in self.items],
+        }
 
 
 @dataclass
@@ -43,6 +57,9 @@ class Tab:
             if participant.name == name
         ][0]
         return participant.total + self.equal_share
+
+    def set_number_of_shared_participants(self, count: int) -> None:
+        self.number_of_shared_participants: int = count
 
     @property
     def all_participants_share(self) -> dict:
@@ -66,8 +83,51 @@ class Tab:
 
     @property
     def equal_share(self) -> float:
-        return self.shared_items_total / self.number_of_participants
+        if not self.participants:
+            return self.shared_items_total / self.number_of_shared_participants
+        else:
+            return self.shared_items_total / self.number_of_participants
 
     @property
     def total(self) -> float:
         return self.shared_items_total + self.participants_total
+
+    @property
+    def manifest(self) -> dict:
+        if not self.shared_items:
+            return {
+                'Tab name': self.name,
+                'Tab date': self.date,
+                'Tab total': self.total,
+                'Tab number of participants': self.number_of_participants,
+                'Tab participants':
+                [participant.manifest for participant in self.participants],
+                'Tab participants share': self.all_participants_share,
+            }
+
+        elif not self.participants:
+            return {
+                'Tab name': self.name,
+                'Tab date': self.date,
+                'Tab total': self.total,
+                'Tab shared items':
+                [item.manifest for item in self.shared_items],
+                'Tab number of shared participants':
+                self.number_of_shared_participants,
+                'Tab equal share': self.equal_share,
+            }
+
+        else:
+            return {
+                'Tab name': self.name,
+                'Tab date': self.date,
+                'Tab total': self.total,
+                'Tab shared items':
+                [item.manifest for item in self.shared_items],
+                'Tab shared items total': self.shared_items_total,
+                'Tab equal share': self.equal_share,
+                'Tab number of participants': self.number_of_participants,
+                'Tab participants':
+                [participant.manifest for participant in self.participants],
+                'Tab participants share': self.all_participants_share,
+            }
