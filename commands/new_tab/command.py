@@ -1,7 +1,6 @@
 import typer
 from typing import List
 from pprint import pprint
-from datetime import datetime
 
 from console import Console
 
@@ -32,7 +31,6 @@ def _new_tab() -> None:
         tab_confirmed = typer.confirm('Confirm tab?')
 
     tab = Tab(name=tab_name,
-              date=datetime.today(),
               shared_items=shared_items,
               participants=participants)
 
