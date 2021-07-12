@@ -136,7 +136,13 @@ def _ask_number_of_shared_participants() -> int:
 
 
 def _print_tab_manifest(tab_manifest: dict) -> None:
-    Console.log(message='Displaying tab manifest:')
-    print('-----------------------------------------------------------------')
-    pprint(tab_manifest, sort_dicts=False)
-    print('-----------------------------------------------------------------')
+    print_confirmed = typer.confirm('Print the tab manifest?')
+    if print_confirmed:
+        Console.log(message='Displaying tab manifest:')
+        print(
+            '-----------------------------------------------------------------'
+        )
+        pprint(tab_manifest, sort_dicts=False)
+        print(
+            '-----------------------------------------------------------------'
+        )
